@@ -38,7 +38,7 @@ def read_graph_from_file(filename):
 
     # TODO: Use the second line to add the vertices to the graph
 
-    for vertex_id in text_lines[1].strip('() \n').split(','):
+    for vertex_id in text_lines[1].strip('\n').split(','):
         graph.add_vertex(vertex_id)
     
 
@@ -46,7 +46,7 @@ def read_graph_from_file(filename):
     # TODO: Use the 3rd+ line to add the edges to the graph
 
     for edges in text_lines[2:]:
-        new_edge = edges.strip('(), \n').split(',')
+        new_edge = edges.strip('() \n').split(',')
         graph.add_edge(new_edge[0], new_edge[1])
 
 
