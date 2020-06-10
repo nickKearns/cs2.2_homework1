@@ -16,14 +16,41 @@ def read_graph_from_file(filename):
 
     # TODO: Use 'open' to open the file
 
+    with open(filename) as f:
+        text_lines = f.readlines()
+
+
+    
+
     # TODO: Use the first line (G or D) to determine whether graph is directed 
     # and create a graph object
 
+
+
+    if text_lines[0].strip() == 'G':
+        is_digraph = False
+    elif text_lines[0].strip() == 'D':
+        is_digraph = True
+    else:
+        raise ValueError("improper graph type")
+
+    graph = Graph(is_digraph)
+
     # TODO: Use the second line to add the vertices to the graph
+
+    for vertex_id in text_lines[1].strip('() \n').split(','):
+        graph.add_vertex(vertex_id)
+    
+
 
     # TODO: Use the 3rd+ line to add the edges to the graph
 
-    pass
+    for edges in text_lines[2:]:
+        new_edge = edges.strip('(), \n').split(',')
+        graph.add_edge(new_edge[0], new_edge[1])
+
+
+    return graph
 
 if __name__ == '__main__':
 

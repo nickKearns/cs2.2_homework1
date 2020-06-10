@@ -88,9 +88,9 @@ class Graph:
         vertex_id2 (string): The unique identifier of the second vertex.
         """
         vertex1 = self.get_vertex(vertex_id1)
-        vertex2 = self.get_vertex(vertex2)
+        vertex2 = self.get_vertex(vertex_id2)
         vertex1.add_neighbor(vertex2)
-        if self.__is_directed:
+        if self.__is_directed == False:
             vertex2.add_neighbor(vertex1)
         
         
