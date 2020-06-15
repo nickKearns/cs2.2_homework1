@@ -191,6 +191,9 @@ class Graph:
 
         return vertex_id_to_path[target_id]
 
+
+
+
     def find_vertices_n_away(self, start_id, target_distance):
         """
         Find and return all vertices n distance away.
@@ -203,25 +206,27 @@ class Graph:
         list<string>: All vertex ids that are `target_distance` away from the start vertex
         """
         
-        vertices_queue = deque()
-        distances_dict = {}
+        vertices_queue = deque()  #vertices_queue holds the vertex object itself
+        distances_dict = {}  #distances dict holds the IDs of the vertices
 
 
 
 
-        vertices_queue.append(self.get_vertex(start_id))
-        distances_dict[start_id] = 0
+        vertices_queue.append(self.get_vertex(start_id))  
+        distances_dict[start_id] = 0  
 
 
         while vertices_queue:
             current_vertex_obj = vertices_queue.pop()
+            current_vertex_id = current_vertex_obj.get_id()
 
 
             for neighbor in current_vertex_obj.get_neighbors():
-                if neighbor.get_id() not in distances_dict:
-                    neighbor_distance = distances_dict[current_vertex_obj] + 1
-                    if neighbor <= target_distance:
-                        distances_dict[neighbor] = neighbor_distance 
+                neighbor_id = neighbor.get_id()
+                if neighbor_id not in distances_dict:
+                    neighbor_distance = distances_dict[current_vertex_id] + 1
+                    if neighbor_distance <= target_distance:
+                        distances_dict[neighbor_id] = neighbor_distance
                 
         target_vertices = []
         for vertex in distances_dict.keys():
@@ -229,5 +234,102 @@ class Graph:
                 target_vertices.append(vertex)
 
         return target_vertices
+
+
+
+
+
+    def is_bipartite(self):
+        """
+        Return True if the graph is bipartite, and False otherwise.
+        """
+        pass
+
+
+    def get_connected_components(self):
+        """
+        Return a list of all connected components, with each connected component
+        represented as a list of vertex ids.
+        """
+        pass
+
+
+    def find_path_dfs_iter(self, start_id, target_id):
+        """
+        Use DFS with a stack to find a path from start_id to target_id.
+        """
+        pass
+
+    def dfs_traversal(self, start_id):
+        """Visit each vertex, starting with start_id, in DFS order."""
+
+        visited = set() # set of vertices we've visited so far
+
+        def dfs_traversal_recursive(start_vertex):
+            print(f'Visiting vertex {start_vertex.get_id()}')
+
+            # recurse for each vertex in neighbors
+            for neighbor in start_vertex.get_neighbors():
+                if neighbor.get_id() not in visited:
+                    visited.add(neighbor.get_id())
+                    dfs_traversal_recursive(neighbor)
+            return
+
+        visited.add(start_id)
+        start_vertex = self.get_vertex(start_id)
+        dfs_traversal_recursive(start_vertex)
+
+    def contains_cycle(self):
+        """
+        Return True if the directed graph contains a cycle, False otherwise.
+        """
+        pass
+
+
+    def topological_sort(self):
+        """
+        Return a valid ordering of vertices in a directed acyclic graph.
+        If the graph contains a cycle, throw a ValueError.
+        """
+        # TODO: Create a stack to hold the vertex ordering.
+
+        s = deque()
+
+
+        if self.contains_cycle():
+            raise ValueError("graph contains cycle cannot be sorted")
+
+
+
+
+        # TODO: For each unvisited vertex, execute a DFS from that vertex.
+        def recursive_topo(vertex):
+            for vertex in self.__vertex_dict:
+                seen_vertices = set()
+
+                for neighbor in vertex.get_neighbors():
+                    if neighbor not in seen_vertices:
+                        seen_vertices.add(neighbor)
+                        recursive_topo(neighbor)
+        
+        # TODO: On the way back up the recursion tree (that is, after visiting a 
+        # vertex's neighbors), add the vertex to the stack.
+
+            s.append(vertex)
+
+        # TODO: Reverse the contents of the stack and return it as a valid ordering.
+
+        answer = []
+        for entry in s:
+            answer.append(s.pop())
+        return answer
+            
+
+
+
+
+
+
+
 
 
