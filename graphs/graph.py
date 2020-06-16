@@ -130,7 +130,7 @@ class Graph:
         queue.append(self.get_vertex(start_id))
 
         while queue:
-            current_vertex_obj = queue.pop()
+            current_vertex_obj = queue.popleft()
             current_vertex_id = current_vertex_obj.get_id()
 
             # Process current node
@@ -205,34 +205,41 @@ class Graph:
         Returns:
         list<string>: All vertex ids that are `target_distance` away from the start vertex
         """
+
+
+
         
         vertices_queue = deque()  #vertices_queue holds the vertex object itself
         distances_dict = {}  #distances dict holds the IDs of the vertices
 
-
+        target_vertices = []
 
 
         vertices_queue.append(self.get_vertex(start_id))  
-        distances_dict[start_id] = 0  
+        distances_dict[start_id] = 0
 
 
         while vertices_queue:
-            current_vertex_obj = vertices_queue.pop()
+            current_vertex_obj = vertices_queue.popleft()
             current_vertex_id = current_vertex_obj.get_id()
+
+
+            
+            
+            if distances_dict[current_vertex_id] == target_distance:
+                target_vertices.append(current_vertex_id)
 
 
             for neighbor in current_vertex_obj.get_neighbors():
                 neighbor_id = neighbor.get_id()
                 if neighbor_id not in distances_dict:
                     neighbor_distance = distances_dict[current_vertex_id] + 1
-                    if neighbor_distance <= target_distance:
-                        distances_dict[neighbor_id] = neighbor_distance
-                
-        target_vertices = []
-        for vertex in distances_dict.keys():
-            if distances_dict[vertex] == target_distance:
-                target_vertices.append(vertex)
+                    distances_dict[neighbor_id] = neighbor_distance
+                    vertices_queue.append(neighbor)
 
+
+
+        
         return target_vertices
 
 
