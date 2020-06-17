@@ -296,12 +296,24 @@ class Graph:
 
         for vertex in self.get_vertices():
             if vertex not in visited_vertices:
-                path_stack = []
-                contains_cycle_recursive(vertex, visited_vertices, path_stack)
-                
+                path_list = []
+                contains_cycle = self.contains_cycle_recursive(vertex, visited_vertices, path_list)
+        return contains_cycle
         
-        def contains_cycle_recursive(self, vertex, visited_vertices, recursionStack):
+    def contains_cycle_recursive(self, vertex, visited_vertices, path_list):
+        contains_cycle = False
 
+        visited_vertices.add(vertex)
+        path_list.append(vertex)
+
+        for neighbor in vertex.get_neighbors():
+            if neighbor not in path_list:
+                contains_cycle = self.contains_cycle_recursive(neighbor, visited_vertices, path_list)
+            elif neighbor in path_list:
+                return True
+        path_list.remove(vertex)
+
+        return contains_cycle
 
 
             
