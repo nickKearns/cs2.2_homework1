@@ -290,7 +290,30 @@ class Graph:
         """
         Return True if the directed graph contains a cycle, False otherwise.
         """
-        pass
+
+        visited_vertices = set()
+
+
+        for vertex in self.get_vertices():
+            if vertex not in visited_vertices:
+                path_stack = []
+                contains_cycle_recursive(vertex, visited_vertices, path_stack)
+                
+        
+        def contains_cycle_recursive(self, vertex, visited_vertices, recursionStack):
+
+
+
+            
+            
+
+            
+
+            
+        
+
+
+
 
 
     def topological_sort(self):
