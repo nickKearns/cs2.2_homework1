@@ -169,7 +169,7 @@ class Graph:
 
         # while queue is not empty
         while queue:
-            current_vertex_obj = queue.pop() # vertex obj to visit next
+            current_vertex_obj = queue.popleft() # vertex obj to visit next
             current_vertex_id = current_vertex_obj.get_id()
 
             # found target, can stop the loop early
@@ -250,7 +250,84 @@ class Graph:
         """
         Return True if the graph is bipartite, and False otherwise.
         """
-        pass
+
+        #initialize a queue that will be used for BFS traversal
+        queue = deque()
+
+        # initiate a dictionary where the keys are 1 and -1  and the values are the list the vertices belong to
+
+        vertex_group = {1: [], -1: []}
+
+        #this value will be multiplied by -1 on each iteration and then used to add vertices to either the 
+        #list associated with 1 or the list associated with -1
+        key_tracker = 1
+
+
+
+        #get the first vertex in the vertex dict as starting point for BFS
+        start_vertex = self.get_vertices()[0]
+
+
+        #add the vertex to the vertex group dictionary using the key tracker and add the id of the vertex NOT THE OBJECT to the list
+        vertex_group[key_tracker].append(start_vertex.get_id())
+
+        #begin BFS by appending the starting vertex 
+        queue.append(start_vertex) 
+
+        while queue:
+            current_vertex_obj = queue.pop()
+            current_vertex_id = current_vertex_obj.get_id()
+            #inverse key_tracker
+            key_tracker *= -1
+            for neighbor in current_vertex_obj.get_neighbors():
+                #doing this so we can check if neighbor is already in the other group
+                temp_key_tracker = key_tracker * -1
+                if neighbor in vertex_group[temp_key_tracker]:
+                    return True
+                else:
+                    vertex_group[key_tracker].append(neighbor)
+                    queue.append(neighbor)
+        return False
+
+
+
+
+
+
+
+
+
+# seen = set()
+#         seen.add(start_id)
+
+#         # Keep a queue so that we visit vertices in the appropriate order
+#         queue = deque()
+#         queue.append(self.get_vertex(start_id))
+
+#         while queue:
+#             current_vertex_obj = queue.popleft()
+#             current_vertex_id = current_vertex_obj.get_id()
+
+#             # Process current node
+#             print('Processing vertex {}'.format(current_vertex_id))
+
+#             # Add its neighbors to the queue
+#             for neighbor in current_vertex_obj.get_neighbors():
+#                 if neighbor.get_id() not in seen:
+#                     seen.add(neighbor.get_id())
+#                     queue.append(neighbor)
+
+#         return # everything has been processed
+
+        
+
+
+
+
+
+        
+
+
 
 
     def get_connected_components(self):
