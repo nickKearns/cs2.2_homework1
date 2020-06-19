@@ -274,20 +274,37 @@ class Graph:
         #begin BFS by appending the starting vertex 
         queue.append(start_vertex) 
 
+        seen_vertices = set()
+
         while queue:
-            current_vertex_obj = queue.pop()
+            current_vertex_obj = queue.popleft()
             current_vertex_id = current_vertex_obj.get_id()
             #inverse key_tracker
-            key_tracker *= -1
+            # seen_vertices.add(current_vertex_id)
+            #find which group current_vertex belongs to 
+            if current_vertex_id in vertex_group[1]:
+                key_tracker = 1
+            elif current_vertex_id in vertex_group[-1]:
+                key_tracker = -1
+
+            seen_vertices.add(current_vertex_id)
+            # print(vertex_group)
+            # print(key_tracker)
+            print('Processing vertex {}'.format(current_vertex_id))
             for neighbor in current_vertex_obj.get_neighbors():
-                #doing this so we can check if neighbor is already in the other group
+
+
+                neighbor_id = neighbor.get_id()
+
+                #flipping the key_tracker so the neighbors can be added to the other group
                 temp_key_tracker = key_tracker * -1
-                if neighbor in vertex_group[temp_key_tracker]:
-                    return True
-                else:
-                    vertex_group[key_tracker].append(neighbor)
+                vertex_group[temp_key_tracker].append(neighbor_id)
+                if neighbor_id in vertex_group[key_tracker]:
+                    return False
+
+                elif neighbor.get_id() not in seen_vertices:
                     queue.append(neighbor)
-        return False
+        return True
 
 
 
@@ -342,7 +359,27 @@ class Graph:
         """
         Use DFS with a stack to find a path from start_id to target_id.
         """
-        pass
+
+        stack = deque()
+        stack.append(start_id)
+
+
+        path = []
+
+        seen_vertices = set()
+
+
+        while stack:
+            current_vertex_id = stack.pop()
+            current_vertext_obj = self.get_vertex(current_vertex_id)
+
+            for neighbor in current_vertext_obj.get_neighbors():
+                pass
+                
+
+
+
+        
 
     def dfs_traversal(self, start_id):
         """Visit each vertex, starting with start_id, in DFS order."""
