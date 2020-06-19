@@ -314,33 +314,6 @@ class Graph:
 
 
 
-# seen = set()
-#         seen.add(start_id)
-
-#         # Keep a queue so that we visit vertices in the appropriate order
-#         queue = deque()
-#         queue.append(self.get_vertex(start_id))
-
-#         while queue:
-#             current_vertex_obj = queue.popleft()
-#             current_vertex_id = current_vertex_obj.get_id()
-
-#             # Process current node
-#             print('Processing vertex {}'.format(current_vertex_id))
-
-#             # Add its neighbors to the queue
-#             for neighbor in current_vertex_obj.get_neighbors():
-#                 if neighbor.get_id() not in seen:
-#                     seen.add(neighbor.get_id())
-#                     queue.append(neighbor)
-
-#         return # everything has been processed
-
-        
-
-
-
-
 
         
 
@@ -361,7 +334,8 @@ class Graph:
         """
 
         stack = deque()
-        stack.append(start_id)
+        starting_vertex = self.get_vertex(start_id)
+        stack.append(starting_vertex)
 
 
         path = []
@@ -370,11 +344,21 @@ class Graph:
 
 
         while stack:
-            current_vertex_id = stack.pop()
-            current_vertext_obj = self.get_vertex(current_vertex_id)
+            current_vertex_obj = stack.pop()
+            current_vertex_id = current_vertex_obj.get_id()
 
-            for neighbor in current_vertext_obj.get_neighbors():
-                pass
+            #if the function has reached its target vertex
+            if current_vertex_id == target_id:
+                path.append(current_vertex_id)
+                return path
+
+            path.append(current_vertex_id)
+
+            for neighbor in current_vertex_obj.get_neighbors():
+                if neighbor not in seen_vertices:
+                    stack.append(neighbor)
+                    seen_vertices.add(neighbor.get_id())
+                
                 
 
 
