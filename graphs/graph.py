@@ -461,36 +461,47 @@ class Graph:
         """
         # TODO: Create a stack to hold the vertex ordering.
 
-        s = deque()
+        solution_stack = deque()
 
 
         if self.contains_cycle():
             raise ValueError("graph contains cycle cannot be sorted")
 
-
+        visited = set()
 
 
         # TODO: For each unvisited vertex, execute a DFS from that vertex.
-        def recursive_topo(vertex):
-            for vertex in self.__vertex_dict:
-                seen_vertices = set()
+        def recursive_topo(vertex, visited_vertices, stack):
 
-                for neighbor in vertex.get_neighbors():
-                    if neighbor not in seen_vertices:
-                        seen_vertices.add(neighbor)
-                        recursive_topo(neighbor)
+            visited_vertices.add(vertex)
+
+            for neighbor in vertex.get_neighbors():
+                if neighbor not in visited_vertices:
+                    recursive_topo(neighbor, visited_vertices, stack)
+            # TODO: On the way back up the recursion tree (that is, after visiting a 
+            # vertex's neighbors), add the vertex to the stack.
+            stack.append(vertex.get_id())
+            return stack
+       
+
+        for vertex in self.get_vertices():
+            if vertex not in visited:
+                recursive_topo(vertex, visited, solution_stack)
         
-        # TODO: On the way back up the recursion tree (that is, after visiting a 
-        # vertex's neighbors), add the vertex to the stack.
+        solution_list = []
 
-            s.append(vertex)
+        for vertex_id in range(len(solution_stack)):
+            solution_list.append(solution_stack.pop())
+
+        return solution_list
+            
 
         # TODO: Reverse the contents of the stack and return it as a valid ordering.
 
-        answer = []
-        for entry in s:
-            answer.append(s.pop())
-        return answer
+        # answer = []
+        # for entry in s:
+        #     answer.append(s.pop())
+        # return answer
             
 
 
