@@ -279,7 +279,6 @@ class Graph:
         while queue:
             current_vertex_obj = queue.popleft()
             current_vertex_id = current_vertex_obj.get_id()
-            #inverse key_tracker
             # seen_vertices.add(current_vertex_id)
             #find which group current_vertex belongs to 
             if current_vertex_id in vertex_group[1]:
@@ -288,8 +287,6 @@ class Graph:
                 key_tracker = -1
 
             seen_vertices.add(current_vertex_id)
-            # print(vertex_group)
-            # print(key_tracker)
             print('Processing vertex {}'.format(current_vertex_id))
             for neighbor in current_vertex_obj.get_neighbors():
 
@@ -325,6 +322,37 @@ class Graph:
         Return a list of all connected components, with each connected component
         represented as a list of vertex ids.
         """
+
+        connected_comp_list = []
+
+        visited = set()
+
+
+
+        def dfs_traversal_recursive(vertex, visited_vertices, connected_vertices):
+            print(f'Visiting vertex {vertex.get_id()}')
+
+            visited_vertices.add(vertex)
+            connected_vertices.append(vertex.get_id())
+
+            # recurse for each vertex in neighbors
+            for neighbor in vertex.get_neighbors():
+                if neighbor not in visited_vertices:
+                    dfs_traversal_recursive(neighbor, visited_vertices, connected_vertices)
+            return connected_vertices
+
+
+        for vertex in self.get_vertices():
+            if vertex not in visited:
+                # visited.add(vertex)
+                current_connected_vertices = []
+                dfs_traversal_recursive(vertex, visited, current_connected_vertices)
+                connected_comp_list.append(current_connected_vertices)
+
+
+        return connected_comp_list
+             
+
         pass
 
 
