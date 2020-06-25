@@ -1,4 +1,5 @@
 from graphs.graph import Graph
+from graphs.weighted_graph import WeightedGraph, WeightedVertex
 from util.file_reader import read_graph_from_file
 # from graphs.weighted_graph import WeightedGraph
 
@@ -8,7 +9,7 @@ if __name__ == '__main__':
 
     # Create the graph
 
-    graph = Graph(is_directed=True)
+    graph = WeightedGraph()
 
     # Add some vertices
     graph.add_vertex('A')

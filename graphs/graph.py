@@ -353,7 +353,6 @@ class Graph:
         return connected_comp_list
              
 
-        pass
 
 
     def find_path_dfs_iter(self, start_id, target_id):
