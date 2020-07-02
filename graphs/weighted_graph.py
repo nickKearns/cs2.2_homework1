@@ -128,18 +128,52 @@ class WeightedGraph(Graph):
         """
         # TODO: Create a list of all edges in the graph, sort them by weight 
         # from smallest to largest
+        
+        vertices_checked_for_weights = set()
+        weights = []
+
+
+        for vertex_id in self.vertex_dict:
+            vertex_obj = self.get_vertex(vertex_id)
+            for neighbor, weight in vertex_obj.get_neighbors_with_weights():
+                neighbor_id = neighbor.get_id()
+                weights.append((weight, vertex_id, neighbor_id))
+                    
+            vertices_checked_for_weights.add(neighbor)
+        weights = sorted(weights)
+        # return weights
+
 
         # TODO: Create a dictionary `parent_map` to map vertex -> its "parent". 
         # Initialize it so that each vertex is its own parent.
 
+        parent_map = {}
+        for vertex_id in self.vertex_dict:
+            parent_map[vertex_id] = vertex_id
+        
+
+
         # TODO: Create an empty list to hold the solution (i.e. all edges in the 
         # final spanning tree)
+
+        solution_list = []
 
         # TODO: While the spanning tree holds < V-1 edges, get the smallest 
         # edge. If the two vertices connected by the edge are in different sets 
         # (i.e. calling `find()` gets two different roots), then it will not 
         # create a cycle, so add it to the solution set and call `union()` on 
         # the two vertices.
+
+
+        while len(solution_list) < len(self.vertex_dict) - 1:
+            current_smallest_weight, vertex_one_id, vertex_two_id = weights.pop(0)
+            if self.find(parent_map, vertex_one_id) != self.find(parent_map, vertex_two_id):
+                mst_edge = (vertex_one_id, vertex_two_id, current_smallest_weight)
+                solution_list.append(mst_edge)
+                self.union(parent_map, vertex_one_id, vertex_two_id)
+
+        return solution_list
+
 
         # TODO: Return the solution list.
 
@@ -170,13 +204,24 @@ class WeightedGraph(Graph):
         # TODO: Create a dictionary `vertex_to_distance` and initialize all
         # vertices to INFINITY - hint: use `float('inf')`
 
+        vertex_to_distance = {}
+        for vertex in self.vertex_dict:
+            if vertex.get_id() == start_id:
+                vertex_to_distance[vertex.get_id()] = 0
+            else:
+                vertex_to_distance[vertex.get_id()] = float('inf')
+
+
         # TODO: While `vertex_to_distance` is not empty:
         # 1. Get the minimum-distance remaining vertex, remove it from the
         #    dictionary. If it is the target vertex, return its distance.
         # 2. Update that vertex's neighbors by adding the edge weight to the
         #    vertex's distance, if it is lower than previous.
+        # while len(vertex_to_distance) > 0:
+
 
         # TODO: Return None if target vertex not found.
+        pass
 
 
     def floyd_warshall(self):
@@ -212,11 +257,5 @@ class WeightedGraph(Graph):
                 for j in self.vertex_dict.keys():
                     dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j])
 
-if __name__ == "__main__":
 
-
-    
-    vertex_a = WeightedVertex('a')
-    vertex_b = WeightedVertex('b')
-    vertex_c = WeightedVertex('c')
 
