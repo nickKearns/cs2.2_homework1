@@ -186,13 +186,48 @@ class WeightedGraph(Graph):
         # TODO: Create a dictionary `vertex_to_weight` and initialize all
         # vertices to INFINITY - hint: use `float('inf')`
 
+
+        vertex_to_weight = {}
+        for vertex_id in self.vertex_dict:
+            vertex_to_weight[vertex_id] = float('inf')
+
+
         # TODO: Choose one vertex and set its weight to 0
+
+        start_vertex = list(self.vertex_dict.keys())[0]
+        vertex_to_weight[start_vertex] = 0
+
 
         # TODO: While `vertex_to_weight` is not empty:
         # 1. Get the minimum-weighted remaining vertex, remove it from the
         #    dictionary, & add its weight to the total MST weight
         # 2. Update that vertex's neighbors, if edge weights are smaller than
         #    previous weights
+
+        total_weight = 0
+
+        while len(vertex_to_weight) > 0:
+            current_lowest = float('inf')
+            current_vertex_id = None
+
+            #find the current lowest edge weight in the graph
+            for vertex_id in vertex_to_weight:
+                weight = vertex_to_weight[vertex_id]
+                if weight < current_lowest:
+                    current_lowest = weight
+                    current_vertex_id = vertex_id
+                    
+            total_weight += current_lowest
+            vertex_to_weight.__delitem__(current_vertex_id)
+
+            current_vertex_obj = self.get_vertex(current_vertex_id)
+            for neighbor, weight in current_vertex_obj.get_neighbors_with_weights():
+
+                if neighbor.get_id() in vertex_to_weight:
+                    if weight < vertex_to_weight[neighbor.get_id()]:
+                        vertex_to_weight[neighbor.get_id()] = weight
+        return total_weight
+
 
         # TODO: Return total weight of MST
 
@@ -204,12 +239,14 @@ class WeightedGraph(Graph):
         # TODO: Create a dictionary `vertex_to_distance` and initialize all
         # vertices to INFINITY - hint: use `float('inf')`
 
+
         vertex_to_distance = {}
+
         for vertex in self.vertex_dict:
-            if vertex.get_id() == start_id:
-                vertex_to_distance[vertex.get_id()] = 0
+            if vertex == start_id:
+                vertex_to_distance[vertex] = 0
             else:
-                vertex_to_distance[vertex.get_id()] = float('inf')
+                vertex_to_distance[vertex] = float('inf')
 
 
         # TODO: While `vertex_to_distance` is not empty:
@@ -217,7 +254,34 @@ class WeightedGraph(Graph):
         #    dictionary. If it is the target vertex, return its distance.
         # 2. Update that vertex's neighbors by adding the edge weight to the
         #    vertex's distance, if it is lower than previous.
-        # while len(vertex_to_distance) > 0:
+
+        while vertex_to_distance:
+
+            current_shortest_edge = float('inf')
+            current_vertex_id = None
+            #find the current shortest distance from the start vertex
+            for vertex_id in vertex_to_distance:
+                weight = vertex_to_distance[vertex_id]
+                if weight < current_shortest_edge:
+                    current_lowest = weight
+                    current_vertex_id = vertex_id
+
+            if current_vertex_id == target_id:
+                return vertex_to_distance[current_vertex_id]
+
+            
+            current_vertex_obj = self.get_vertex(current_vertex_id)
+            print(current_vertex_obj)
+            for neighbor, weight in current_vertex_obj.get_neighbors_with_weights():
+                neighbor_id = neighbor.get_id()
+                vertex_to_distance[neighbor_id] = min(weight + current_shortest_edge, vertex_to_distance[neighbor_id])
+
+            vertex_to_distance.__delitem__(current_vertex_id)
+        
+            
+
+
+
 
 
         # TODO: Return None if target vertex not found.
@@ -256,6 +320,6 @@ class WeightedGraph(Graph):
             for i in self.vertex_dict.keys():
                 for j in self.vertex_dict.keys():
                     dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j])
-
+        return dist
 
 

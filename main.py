@@ -60,7 +60,7 @@ if __name__ == '__main__':
     vertex_e = WeightedVertex('e')
     vertex_f = WeightedVertex('f')
 
-    graph = WeightedGraph(True)
+    graph = WeightedGraph(False)
 
     graph.add_vertex(vertex_a.get_id())
     graph.add_vertex(vertex_b.get_id())
@@ -79,4 +79,7 @@ if __name__ == '__main__':
     graph.add_edge(vertex_f.get_id(), vertex_e.id, 5)
     graph.add_edge(vertex_f.get_id(), vertex_a.id, 3)
 
-    print(graph.minimum_spanning_tree_kruskal())
+    # print(graph.minimum_spanning_tree_kruskal())
+    # print(graph.minimum_spanning_tree_prim())
+    # print(graph.floyd_warshall())
+    print(graph.find_shortest_path('a', 'd'))
