@@ -271,10 +271,14 @@ class WeightedGraph(Graph):
 
             
             current_vertex_obj = self.get_vertex(current_vertex_id)
-            print(current_vertex_obj)
+
+
             for neighbor, weight in current_vertex_obj.get_neighbors_with_weights():
                 neighbor_id = neighbor.get_id()
-                vertex_to_distance[neighbor_id] = min(weight + current_shortest_edge, vertex_to_distance[neighbor_id])
+                if neighbor_id in vertex_to_distance:
+                    vertex_to_distance[neighbor_id] = min(weight + vertex_to_distance[current_vertex_id], vertex_to_distance[neighbor_id])
+
+            # print(vertex_to_distance)
 
             vertex_to_distance.__delitem__(current_vertex_id)
         

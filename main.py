@@ -82,4 +82,4 @@ if __name__ == '__main__':
     # print(graph.minimum_spanning_tree_kruskal())
     # print(graph.minimum_spanning_tree_prim())
     # print(graph.floyd_warshall())
-    print(graph.find_shortest_path('a', 'd'))
+    print(graph.find_shortest_path('a', 'c'))
